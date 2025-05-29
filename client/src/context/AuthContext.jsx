@@ -1,65 +1,33 @@
 // src/context/AuthContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
-const AuthContext = createContext();
+// 1. Create the context
+export const AuthContext = createContext();
 
-const baseUrl = import.meta.env.VITE_API_URL;
-
+// 2. Create the provider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  // Check if user is logged in when the app loads
+  // Optional: Load user from localStorage on mount
   useEffect(() => {
-    const checkUserStatus = async () => {
-      setIsLoading(true);
-      try {
-        const token = localStorage.getItem("customerToken");
-        if (!token) {
-          setUser(null);
-          return;
-        }
-        const response = await fetch(`${baseUrl}/api/auth/isloggedin`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await response.json();
-
-        if (!data.success) {
-          localStorage.removeItem("customerToken");
-          setUser(null);
-        } else {
-          setUser({ token, ...data.user });
-        }
-      } catch (error) {
-        console.error("Error checking user status:", error);
-        localStorage.removeItem("customerToken");
-        setUser(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkUserStatus();
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, []);
 
-  // Login helper - store token and user data
-  const login = (token, userData) => {
-    localStorage.setItem("customerToken", token);
-    setUser({ token, ...userData });
-  };
-
-  // Logout helper - clear user data and token
-  const logout = () => {
-    localStorage.removeItem("customerToken");
-    setUser(null);
-  };
+  // Optional: Persist user to localStorage
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-// Custom hook to use auth context
-export const useAuth = () => useContext(AuthContext);

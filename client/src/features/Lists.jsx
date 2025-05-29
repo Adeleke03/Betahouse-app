@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { properties, popularproperties } from "../properties.js";
 import { Link, Video, Image, Bed, Bath } from "lucide-react";
-import LocateIcon from "../assets/icon (5).png";
-import SwitchIcon from "../assets/icon (3).png";
-import ShareIcon from "../assets/icon (4).png";
+import LocateIcon from "../assets/icon-5.png";
+import SwitchIcon from "../assets/icon-3.png";
+import ShareIcon from "../assets/icon-4.png";
 import HeartIcon from "../assets/Link.png";
 
 const Lists = () => {
