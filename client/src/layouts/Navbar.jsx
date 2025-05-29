@@ -21,8 +21,8 @@ const Navbar = () => {
 
   return (
     <>
-      <main className="wrapper bg-[url('/Frame%209325.png')] text-white bg-cover bg-center">
-        <nav className="bg-black/15 flex justify-between">
+      <main className="  bg-[url('/Frame%209325.png')] text-white bg-cover bg-center">
+        <nav className="wrapper bg-black/15 flex justify-between">
           {/* Logo */}
           <Link to="/">
             <section><Logo /></section>

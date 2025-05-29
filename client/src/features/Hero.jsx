@@ -9,7 +9,7 @@ const Hero = () => {
   };
 
   return (
-    <main className="px-4 py-10">
+    <main className="wrapper px-4 py-10">
       {/* Hero text */}
       <section className="text-center mb-10">
         <h1 className="font-bold text-3xl md:text-5xl lg:text-[68px] leading-tight tracking-wide">
