@@ -6,9 +6,13 @@ import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import Logo from "../utils/Logo";
 import Login from "./Login";
+import { useNavigate } from "react-router-dom"; 
+
 
 
 const SignUp = () => {
+   const navigate = useNavigate(); 
+  const baseUrl = import.meta.env.VITE_API_URL;
   const {
     register,
     handleSubmit,
@@ -20,11 +24,36 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log("Form submitted with:", data);
-      toast.success("Sign up successful!");
-      reset(); // Clear form
+      const response = await fetch(`${baseUrl}/api/auth/sign-up`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      console.log(result);
+      
+
+      if (!result.success) {
+        toast.error(result.errMsg || "Something went wrong!");
+        return;
+      }
+
+      toast.success(result.message || "Sign up successful!", { duration: 3000 });
+
+      reset();
+
+      // Redirect to login page after delay using useNavigate
+      setTimeout(() => {
+        navigate("/login"); 
+      }, 2000);
+
     } catch (error) {
-      toast.error("Sign up failed!");
+      // console.error("Sign up error:", error);
+      // toast.error("Sign up failed!");
+      console.log(error.message);
     }
   };
 
